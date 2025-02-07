@@ -1,0 +1,195 @@
+import pandas as pd
+
+#리스트로 시리즈 생성
+print('\n리스트로 시리즈 생성')
+a = pd.Series([1, 2, 3, 4])
+print(a)
+b = pd.Series([1, 2, 3], index=['a', 'b', 'c'])
+print(b)
+
+# 리스트로 데이터프레임 생성
+print('\n리스트로 데이터프레임 생성')
+list1 = list([['한빛', '남자', '20', '180'],
+['한결', '남자', '21', '177'],
+['한라', '여자', '20', '160']])
+col_names = ['이름', '성별', '나이', '키']
+pd.DataFrame(list1, columns=col_names)
+
+# 딕셔너리로 데이터프레임 생성
+print('\n딕셔너리로 데이터프레임 생성')
+dict1 = {'이름':{0:'한빛', 1:'한결', 2:'한라'},
+         '성별':{0:'남자', 1:'남자', 2:'여자'},
+         '나이':{0:'20', 1:'21', 2:'20'},
+          '키':{0:'180', 1:'177', 2:'160'}}
+pd.DataFrame(dict1).to_csv('dtest.csv', index=False)
+
+#배열로 데이터프레임 생성
+print('\n배열로 데이터프레임 생성')
+import numpy as np
+
+import numpy as np 
+#배열 
+arr1 = np.array([['한빛','남자', '20', '180'],['한결','남자', '21', '177'],['한라','여자', '20', '160']]) 
+#열 이름 리스트 
+col_names = ['이름','성별','나이','키'] 
+#데이터프레임 생성하기 
+pd.DataFrame(arr1, columns=col_names)
+
+#CSV 파일로 데이터프레임 생성
+print('\nCSV 파일로 데이터프레임 생성')
+list1 = list([['허준호','남자','30','183'],
+['이가원','여자','24','162'],
+['배규민','남자','23','179'],
+['고고림','남자','21','182'],
+['이새봄','여자','28','160'],
+['이보람','여자','26','163'],
+['이루리','여자','24','157'],
+['오다현','여자','24','172']])
+col_names = ['이름','성별','나이','키']
+df = pd.DataFrame(list1, columns=col_names)
+df
+
+#데이터프레임을 CSV 파일로 저장
+print('\n데이터프레임을 CSV 파일로 저장')
+#디렉토리에 CSV 파일로 저장하기 
+df.to_csv('./file.csv', header=True, index=False, encoding='utf-8') 
+#CSV 파일 읽기 
+df2 = pd.read_csv('./file.csv', sep=',') 
+df2
+
+#모든 열 이름 조회
+print('\n모든 열 이름 조회')
+df.columns
+
+#데이터프레임 값 개수와 빈도수 확인
+print('\n데이터프레임 값 개수와 빈도수 확인')
+df.describe()
+
+# 데이터프레임의 처음 세 행 검색
+print('\n데이터프레임의 처음 세 행 검색')
+df.head(3)
+
+# 데이터프레임의 마지막 세 행 검색
+print('\n데이터프레임의 마지막 다섯 행 검색')
+df.tail()
+
+# 인덱스 기준으로 정렬
+print('\n인덱스 기준으로 정렬')
+df.sort_index(axis=0).head()
+
+#열 기준으로 정렬
+print('\n열 기준으로 정렬')
+df.sort_values(by=['나이', '키'], ascending=False).head()
+
+#열 이름으로 데이터 조회
+print('\n열 이름으로 데이터 조회')
+df[['이름', '키']].head( )
+
+#인덱스로 데이터 조회
+print('\n인덱스로 데이터 조회')
+df.iloc[0:2, 0:1]
+
+#인덱스로 데이터 조회
+print('\n인덱스로 데이터 조회')
+df.iloc[0:2, 1:2]
+
+#조건식을 만족하는 데이터 조회(1)
+print('\n조건식을 만족하는 데이터 조회(1)')
+#df[df['키'] > 180].head()
+
+#조건식을 만족하는 데이터 조회(2)
+print('\n조건식을 만족하는 데이터 조회(2)')
+list1 = list([['허준호', '남자', 30, 183], 
+ ['이가원', '여자', 24, 162], 
+  ['배규민', '남자', 23, 179], 
+   ['고고림', '남자', 21, 182], 
+    ['이새봄', '여자', 28, 160], 
+     ['이보람', '여자', 26, 163], 
+      ['이루리', '여자', 24, 157], 
+       ['오다현', '여자', 24, 172]]) 
+col_names = ['이름', '성별', '나이', '키'] 
+df = pd.DataFrame(list1, columns=col_names) 
+#df[df['키'] > 180]
+
+#리스트 요소와 일치하는 데이터 조회
+print('\n리스트 요소와 일치하는 데이터 조회')
+df[df['나이'].isin([21, 23])]
+
+#두 조건식을 동시에 만족하는 데이터 조회
+print('\n두 조건식을 동시에 만족하는 데이터 조회')
+df[(df['성별'] == '여자') & (df['키'] > 160)]
+
+#두 조건식 중 하나 이상 만족하는 데이터 조회
+print('\n두 조건식 중 하나 이상 만족하는 데이터 조회')
+df[(df['나이'] >= 28) | (df['성별'] == '남자')]
+
+#특정 문자열을 포함하는 문자열 데이터 조회
+print('\n특정 문자열을 포함하는 문자열 데이터 조회')
+df[df['이름'].str.contains('봄')]
+
+#데이터프레임 통계 확인
+print('\n데이터프레임 통계 확인')
+df.describe( )
+
+#인덱스로 조회한 데이터를 수정
+print('\n인덱스로 조회한 데이터를 수정')
+df.loc[4,'키'] = df.loc[4,'키'] + 5 
+df.loc[[4]]
+
+#반복 연산자 사용
+print('\n반복 연산자 사용')
+df.loc[1:3,'키'] = ['모름'] * 3 
+df
+
+#인덱스 변경(1)
+print('\n인덱스 변경(1)')
+df.set_index('이름', inplace=True) 
+df.head(3)
+
+#열 생성
+print('\n열 생성')
+df['보너스'] = df['나이'] * 10000
+df.head(3)
+
+#열 삭제
+print('\n열 삭제')
+df.drop('보너스', axis=1, inplace=True)
+df.head(3)
+
+#인덱스 변경(2)
+print('\n인덱스 변경(2)')
+df.reset_index(inplace=True)
+df.head(3)
+
+#데이터 치환
+print('\n데이터 치환')
+rep_cond = {'성별':{'남자':1, '여자':0}} 
+df2 = df.replace(rep_cond) 
+df2.head(3)
+
+#데이터프레임의 값 연산
+print('\n데이터프레임의 값 연산')
+
+data = []
+df = pd.read_csv('./dtest.csv', encoding = 'utf8')
+print(df.columns)
+#각 리스트에 맨 앞에 순서 추가
+for i in range(0, len(df)):
+  data.append(list(df.loc[i])+ [i])
+
+print(data)
+cols = list(df.columns)
+cols.append('비고2')
+pd.DataFrame(data, columns = cols).to_csv('Cdata.csv', index=False)
+df = pd.read_csv('./Cdata.csv', encoding = 'utf8')
+print(df)
+
+height = []
+for i in range(0, len(df)):
+  height.append(int(df.loc[i][3]))
+
+#키의 최소값, 최대값, 평균, 표준편차
+print(np.array(height).min())
+print(np.array(height).max())
+print(round(np.array(height).mean(), 2))
+print(round(np.array(height).std(), 2))
