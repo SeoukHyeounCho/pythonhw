@@ -1,0 +1,30 @@
+/*
+정수 A, B를 입력받아 다음 규칙에 따르는 프로그램을 작성하시오.
+1. A가  B의 배수이면, A/B 출력
+2. A가 B보다 크고 배수가 아니라면 A%B 출력
+3. A가 B보다 작다면, A + B 를 출력
+4.아무것도 해당되지 않는다면 A, B 각각 출력
+*/
+#include <stdio.h>
+
+void main()
+{
+    
+    int a = 0;
+    int b = 0;
+    scanf("%d %d", &a,&b);
+    
+    if(a % b == 0){
+        printf("%d", a/b);
+    }else if( a > b && !(a % b==0)){
+        printf("%d",a%b);
+    
+    }else if(a < b){
+        printf("%d",a+b);
+    }else{
+        printf("%d",a+b);
+    }
+        
+
+
+}

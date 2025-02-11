@@ -1,0 +1,51 @@
+/*
+
+어떤 숫자가 다음 조건 중 하나라도 만족하면 특별한 숫자라고 판단한다.
+숫자가 3의 배수이면서 홀수이다.
+숫자의 각 자리 숫자의 합이 7의 배수이다.
+숫자의 첫 번째 자리 숫자가 마지막 자리 숫자보다 크다.
+(숫자의 입력값은 0부터 999까지의 제한한다)    
+*/
+
+#include <stdio.h>
+
+void main()
+{
+    
+    int a = 0;
+
+    int digits = 0;
+    int last_digits = 0;
+    int first_digits = 0;
+    int sum = 0;
+
+    scanf("%d", &a);
+    if(a <= 999 && a >= 1){
+
+    
+        
+        if(a >= 100) {
+            first_digits = a / 100;
+        } else if(a >= 10) {
+            first_digits = a / 10;
+        } else {
+            first_digits = a;
+            last_digits = a;
+        }
+        
+        digits = a;
+        while (digits > 0) {
+            sum += digits % 10;
+            digits = digits / 10;
+        }
+        
+        if((a % 3 == 0 && !(a % 2 == 0)) || sum % 7 == 0 || first_digits < last_digits){
+            printf("%d 는 특별한 숫자 입니다.", a);
+        }   else{
+            printf("%d 는 일반 숫자 입니다.", a);
+        }
+    }   else{
+            printf("입력숫자의 범위는 0 ~ 999 입니다.");
+
+    }
+}
