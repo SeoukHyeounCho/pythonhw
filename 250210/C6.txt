@@ -1,0 +1,45 @@
+/*
+사용자로부터 시험 점수를 입력받고, 아래 조건에 따라 등급을 부여한 후 추가적인 보너스를 계산하여 출력하는 프로그램을 작성하시오. 
+
+등급 규칙: 90점 이상 → "A 등급" 
+80점 이상 89점 이하 → "B 등급" 
+70점 이상 79점 이하 → "C 등급" 
+60점 이상 69점 이하 → "D 등급" 
+60점 미만 → "F 등급" 
+
+보너스 규칙: 
+A 등급 → 점수의 10% 추가 보너스 
+B 등급 → 점수의 5% 추가 보너스 
+C 등급 이하 → 추가 보너스 없음    
+*/
+
+#include <stdio.h>
+
+int main() {
+    int score = 0;
+    printf("A 등급의 경우 점수의 추가 보너스 10%%\nB 등급의 경우 점수의 추가 보너스 5%%\n");
+    
+    printf("점수를 입력하세요: ");
+    scanf("%d", &score);
+    
+    if (score >= 90) {
+        score += score * 0.1;
+        if (score > 100) {
+            score = 100;
+        }
+        printf("A 등급 입니다.\n보너스 합산 점수: %d\n", score);
+    } else if (score >= 80) {
+        score += score * 0.05;
+        printf("B 등급 입니다.\n보너스 합산 점수: %d\n", score);
+    } else if (score >= 70) {
+        printf("C 등급 입니다.\n점수: %d\n", score);
+    } else if (score >= 60) {
+        printf("D 등급 입니다.\n점수: %d\n", score);
+    } else {
+        printf("F 등급 입니다.\n점수: %d\n", score);
+    }
+
+}
+
+
+    
