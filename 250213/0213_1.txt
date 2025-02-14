@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main() {
+    int M = 0, N = 0;
+    printf("정수 M, N 을 입력하세요: ");
+    scanf("%d %d", &M, &N);
+    
+    for (int i = M; i <= N; i++) {
+        int find7 = i;
+        int count7 = 0;  
+        
+        while (find7 != 0) {
+            if (find7 % 10 == 7) {
+                count7 = 1;
+                break;
+            }
+            find7 /= 10;
+        }
+        
+        if (i % 7 == 0 || count7) {
+            continue;
+        }
+        
+        if (i % 5 == 0) {
+            printf("%d ", i);
+            break;
+        }
+        
+        printf("%d ", i);
+    }
+    
+}
