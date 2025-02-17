@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+void main()
+
+
+{
+    int list_a[5] = {5, 4, 3, 2, 1};
+    int *ptr = list_a;
+
+    
+    for (int i = 0; i < 5; i++) {
+    //printf("%d %d %d %d %d\n", list_a[0], list_a[1], list_a[2], list_a[3], list_a[4]);
+        int min_num = i;
+        for (int j = i + 1; j < 5; j++) {
+            if (*(ptr + min_num) > *(ptr + j)) {
+                min_num = j;
+                //printf("\n%d\n", min_num);
+            }
+        }
+
+        int temp = *(ptr + i);
+        *(ptr + i) = list_a[min_num];
+        *(ptr + min_num) = temp;
+        
+
+        
+    }
+    printf("최종 : %d %d %d %d %d\n", *(ptr + 0), *(ptr + 1), *(ptr + 2), *(ptr + 3), *(ptr + 4));
+
+} 
