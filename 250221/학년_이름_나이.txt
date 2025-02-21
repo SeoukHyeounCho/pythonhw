@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+
+struct Student {
+    char name[50]; 
+    int age;
+    float grade;
+};
+
+int main() {
+    struct Student student;
+
+    printf("학생의 이름을 : ");
+    scanf("%s", student.name);
+    printf("학생의 나이를 : ");
+    scanf("%d", &student.age);
+    printf("학생의 학점을 : ");
+    scanf("%f", &student.grade);
+
+    printf("\n입력한 학생 정보:\n");
+    printf("이름: %s\n", student.name);
+    printf("나이: %d\n", student.age);
+    printf("학점: %.2f\n", student.grade);
+
+}

@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+union Data {
+    int intValue;
+    float floatValue;
+    char charValue;
+};
+
+int main() {
+    union Data d;
+    
+    printf("정수 입력 : ");
+    scanf("%d", &d.intValue);
+    
+    printf("\n[정수 주소소]\n");
+    printf("intValue: %d, 주소: %p\n", d.intValue, (void*)&d.intValue);
+    printf("floatValue: %f, 주소: %p\n", d.floatValue, (void*)&d.floatValue);
+    printf("charValue: %c, 주소: %p\n\n", d.charValue, (void*)&d.charValue);
+    
+    printf("실수 입력 : ");
+    scanf("%f", &d.floatValue);
+    
+    printf("\n[실수 주소소]\n");
+    printf("intValue: %d, 주소: %p\n", d.intValue, (void*)&d.intValue);
+    printf("floatValue: %f, 주소: %p\n", d.floatValue, (void*)&d.floatValue);
+    printf("charValue: %c, 주소: %p\n\n", d.charValue, (void*)&d.charValue);
+    
+    printf("문자 입력 : ");
+    scanf(" %c", &d.charValue);
+    
+    printf("\n[문자 주소소]\n");
+    printf("intValue: %d, 주소: %p\n", d.intValue, (void*)&d.intValue);
+    printf("floatValue: %f, 주소: %p\n", d.floatValue, (void*)&d.floatValue);
+    printf("charValue: %c, 주소: %p\n\n", d.charValue, (void*)&d.charValue);
+    
+
+}
