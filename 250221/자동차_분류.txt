@@ -1,55 +1,74 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MODEL_COUNT 5
-#define TYPE_COUNT 4
-
+// 차량 유형을 열거형(enum)으로 정의
 enum cartype {
-    sedan = 1,
-    suv = 2,
-    truck = 3,
-    van = 4
+    SEDAN = 1,
+    SUV,
+    TRUCK,
+    VAN
 };
 
-const char* car_type(enum cartype type) {
-    if (type == sedan) {
-        return "sedan";
-    } else if (type == suv) {
-        return "suv";
-    } else if (type == truck) {
-        return "truck";
-    } else if (type == van) {
-        return "van";
-    } else {
-        return "unknown";
+// 각 차량 유형별로 모델명을 담는 배열 정의
+const char* sedan_list[]  = {"sonata", "avante", "k5", "grandeur", "sm6"};
+const char* suv_list[]    = {"tucson", "santaFe", "sorento", "palisade", "qm6"};
+const char* truck_list[]  = {"porter", "bongo", "actros", "mighty", "titan"};
+const char* van_list[]    = {"carnival", "staria", "ray", "sprinter", "vito"};
+
+// 차량 유형을 문자열로 바꿔주는 함수
+const char* car_type_name(enum cartype type) {
+    switch (type) {
+        case SEDAN:  return "SEDAN";
+        case SUV:    return "SUV";
+        case TRUCK:  return "TRUCK";
+        case VAN:    return "VAN";
+        default:     return "UNKNOWN";
     }
-};
+}
 
-struct car_find {
-    enum cartype type; // #define TYEP_COUNT 4(SEDAN, SUV, TRUCK, VAN)
-    const char *models[MODEL_COUNT]; // #define MODEL_COUNT 5
-};
-
-struct car_find carval[TYPE_COUNT] = {
-    {sedan, {"sonata", "avante", "k5", "grandeur", "sm6"}},
-    {suv, {"tucson", "santaFe", "sorento", "palisade", "qm6"}},
-    {truck, {"porter", "bongo", "actros", "mighty", "titan"}},
-    {van, {"carnival", "staria", "ray", "sprinter", "vito"}}
-};
-
-
-int main() {
-    char model[20];
-    
-    printf("모델 찾기 : ");
-    scanf("%s", model);
-    
-    for (int i = 0; i < TYPE_COUNT; i++) {
-        for (int j = 0; j < MODEL_COUNT; j++) {
-            if (strcmp(carval[i].models[j], model) == 0) {
-                printf("[%s]는 %s 입니다.\n", model, car_type(carval[i].type));
-                break;
-            }
+// 전달받은 모델명을 각 리스트에서 찾아보는 함수
+enum cartype find_cartype(const char* model) {
+    // 세단 
+    for (int i = 0; i < (int)(sizeof(sedan_list) / sizeof(sedan_list[0])); i++) {
+        if (strcmp(model, sedan_list[i]) == 0) {
+            return SEDAN;
         }
     }
+    // SUV 
+    for (int i = 0; i < (int)(sizeof(suv_list) / sizeof(suv_list[0])); i++) {
+        if (strcmp(model, suv_list[i]) == 0) {
+            return SUV;
+        }
+    }
+    // 트럭 
+    for (int i = 0; i < (int)(sizeof(truck_list) / sizeof(truck_list[0])); i++) {
+        if (strcmp(model, truck_list[i]) == 0) {
+            return TRUCK;
+        }
+    }
+    // 밴 
+    for (int i = 0; i < (int)(sizeof(van_list) / sizeof(van_list[0])); i++) {
+        if (strcmp(model, van_list[i]) == 0) {
+            return VAN;
+        }
+    }
+
+}
+
+int main() {
+    char Model[20]; 
+    
+    printf("찾을 차량 모델명을 입력하세요: ");
+    scanf("%s", Model);
+    
+    enum cartype ctype = find_cartype(Model);
+    
+    // 판별된 차량 유형을 문자열로 변환해 출력
+    if (ctype == 0) {
+        printf("[%s] 은(는) 등록되지 않은 모델입니다.\n", Model);
+    } else {
+        printf("[%s]은(는) %s 입니다.\n", Model, car_type_name(ctype));
+    }
+
+    return 0;
 }
