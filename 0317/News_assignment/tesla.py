@@ -1,3 +1,24 @@
+#import sys
+#!sudo add-apt-repository ppa:saiarcot895/chromium-beta
+##실행 결과에서 Enter 입력
+#!sudo apt remove chromium-browser
+#!sudo snap remove chromium
+#!sudo apt install chromium-browser
+#!pip3 install selenium
+#!apt-get update
+#!apt install chromium-chromedriver
+#!cp /usr/lib/chromium-browser/chromedriver /usr/bin
+#sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
+
+#!sudo apt-get install -y fonts-nanum
+#!sudo fc-cache -fv
+#!rm ~/.cache/matplotlib -rf
+#!pip install konlpy
+
+
+
+
+
 import time
 import csv
 from selenium import webdriver
@@ -18,10 +39,10 @@ url = f"https://search.naver.com/search.naver?sm=tab_hty.top&where=news&ssc=tab.
 
 # Selenium 옵션 설정
 options = webdriver.ChromeOptions()
-options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
-webdriver_service = Service('/usr/bin/chromedriver')
+options.add_argument('--headless') #백그라운드 실행
+options.add_argument('--no-sandbox') #샌드박스 보안기능 비활성화
+options.add_argument('--disable-dev-shm-usage') # 공유 메모리 사용 제한 옵션(리눅스나 도크에서 주로 사용)
+webdriver_service = Service('/usr/bin/chromedriver') #크롬드라이버의 실행 경로를 지정
 driver = webdriver.Chrome(service=webdriver_service, options=options)
 driver.get(url)
 time.sleep(1)
@@ -72,34 +93,35 @@ filename = f"{topic}_news.csv"
 df.to_csv(filename, index=False, encoding='utf-8-sig')
 print(f"CSV 파일 저장 완료: '{filename}' (기사 수: {len(df)}개)")
 
-# CSV 파일 읽어오기 (제목만 추출하여 텍스트 분석)
-with open(filename, 'r', encoding='utf-8-sig') as f:
-    rdr = csv.reader(f)
-    all_titles = ''
-    # 첫 줄은 헤더이므로 건너뜁니다.
-    next(rdr)
-    for line in rdr:
-        all_titles += ' ' + line[2]  # 제목 컬럼 (인덱스 2)
+# CSV 파일 읽어오기
+filename = '테슬라_news.csv'  # 실제 저장된 파일명으로 변경
+f = open(filename, 'r', encoding='utf-8-sig')
+rdr = csv.reader(f)
+next(rdr)  # 첫 줄(헤더) 건너뛰기
 
-all_titles = all_titles.strip()
-print(all_titles)
+title = ''
+for line in rdr:
+    title = title + ' ' + line[2]  # 제목 컬럼 (인덱스 2)
 
-exclude_words = {'엘앤', '에프', '테슬라'}
+f.close()  # 파일 닫기
 
-# 단어 길이가 1보다 크고 제외 리스트에 없는 단어만 선택
-words = [n for n in nouns if len(n) > 1 and n not in exclude_words]
+print(title)
 
-# 문자열 분석 및 워드클라우드 생성
+# 기존 코드와 동일하게 문자열 처리
+title = title[6:]
+print(title)
+
+# 형태소 분석 및 단어 빈도수 계산
 okt = Okt()
-nouns = okt.nouns(all_titles)
-words = [n for n in nouns if len(n) > 1]
+nouns = okt.nouns(title)
+words = [n for n in nouns if len(n) > 1]  # 길이가 1보다 큰 단어만 사용
 c = Counter(words)
 
-stopwords = {'엘앤', '에프', '테슬라'}
+# 워드클라우드 생성
 wc = WordCloud(font_path='/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf',
-               scale=2.0, colormap='Spectral',
-               stopwords=stopwords)
+               scale=2.0, colormap='Spectral')
 gen = wc.generate_from_frequencies(c)
+
 plt.figure()
 plt.imshow(gen)
 plt.axis('off')
