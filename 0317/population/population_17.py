@@ -2,44 +2,44 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+import pandas as pd
+
 # CSV 파일 읽어오기: 두 번째 헤더 행 건너뛰기
 df = pd.read_csv('행정구역_시군구_별__성별_인구수_20250320172339.csv', 
                  encoding='cp949', skiprows=[1])
-columns = list(df.columns)
-# 첫 번째 컬럼은 지역명, 나머지 컬럼은 날짜 정보
 
-# 인구수 증감 계산 (popDiff)
+# 컬럼 리스트 가져오기 (첫 번째 컬럼은 지역명, 나머지는 날짜)
+columns = list(df.columns)
+del columns[1]  # 두 번째 컬럼 삭제
+
+# 🔹 인구수 증감 계산 (popDiff)
 popDiff = []
-for i in range(len(df)):
-    # 위치 기반 인덱싱 사용: iloc[i, 0]는 지역명
-    row = [df.iloc[i, 0]]
-    for j in range(2, len(columns)):
-        try:
-            pop = int(df.iloc[i, j]) - int(df.iloc[i, j - 1])
-        except Exception as e:
-            pop = 0
+for i in range(2, len(df)):  # 첫 두 행 제외
+    row = [df.loc[i][0]]  # 첫 번째 컬럼 (지역명)
+    for j in range(2, len(df.loc[i])):  # 2번째 컬럼부터 반복
+        pop = int(df.loc[i][j]) - int(df.loc[i][j - 1]) if df.loc[i][j - 1] != 0 else 0
         row.append(pop)
     popDiff.append(row)
-# 새 DataFrame: 첫 번째 열은 지역명, 이후는 인구 증감 데이터 (날짜는 원래 2번째 컬럼부터)
-new_columns = [columns[0]] + columns[2:]
-dfPopDiff = pd.DataFrame(popDiff, columns=new_columns)
+
+# 데이터프레임 생성 및 CSV 저장
+dfPopDiff = pd.DataFrame(popDiff, columns=columns)
 dfPopDiff.to_csv('populationDiff.csv', encoding='cp949', index=False)
 
-# 인구 증가율 계산 (popIncreaseRate)
+# 🔹 인구 증가율 계산 (popIncreaseRate)
 popIncreaseRate = []
-for i in range(len(df)):
-    row = [df.iloc[i, 0]]
-    for j in range(2, len(columns)):
-        try:
-            prev = int(df.iloc[i, j - 1])
-            curr = int(df.iloc[i, j])
-            rate = (curr - prev) / prev * 100.0 if prev != 0 else 0.0
-        except Exception as e:
-            rate = 0.0
-        row.append(rate)
+for i in range(2, len(df)):
+    row = [df.loc[i][0]]
+    for j in range(2, len(df.loc[i])):
+        prev = int(df.loc[i][j - 1])
+        curr = int(df.loc[i][j])
+        pop = (curr - prev) / prev * 100.0 if prev != 0 else 0.0
+        row.append(pop)
     popIncreaseRate.append(row)
-dfPopIncreaseRate = pd.DataFrame(popIncreaseRate, columns=new_columns)
+
+# 데이터프레임 생성 및 CSV 저장
+dfPopIncreaseRate = pd.DataFrame(popIncreaseRate, columns=columns)
 dfPopIncreaseRate.to_csv('populationIncreaseRate.csv', encoding='cp949', index=False)
+
 
 # CSV 파일에서 인구수 증감 데이터 다시 읽어오기
 df_diff = pd.read_csv('populationDiff.csv', encoding='cp949')
